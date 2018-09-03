@@ -1,0 +1,103 @@
+#!/bin/bash
+
+if [[ $EUID -ne 0 ]]; then
+  echo "This script must be ran as root, or with sudo privileges."
+  exit 1
+fi
+
+### setup ###
+# if this is the first run, move to appropriate directory and set a config file
+if [ ! -e /etc/autohosts.conf ];
+then
+
+  function croncheck() {
+    crontab -l | grep -q 'autohosts' && EXIST=1 || EXIST=0
+  }
+
+  # move the script to /usr/local/bin so it can be executed as an alias
+  echo "Creating an alias for autohosts.."
+  cp autohosts /usr/local/bin/ && chmod +x /usr/local/bin/autohosts
+
+  # double-check to ensure we don't have a conflicting cron
+  croncheck
+
+  if [ "$EXIST" == 0 ];
+    then
+
+      # if no cronjob exists, create one
+      crontab -l | { cat; echo "22 19 * * 0 > autohosts /dev/null 2>&1 >> autohosts"; } | crontab -
+
+      croncheck
+      if [ "$EXIST" == 1 ];
+      then
+        echo "Cronjob created..."
+      else
+        echo "There was a problem creating the cronjob, you might have to create it manually!"
+      fi
+
+  fi
+
+  # set a var that is later used to see if the application has been configured already
+  echo FIRSTRUN=0 > /etc/autohosts.conf
+
+  echo "Setup is complete!"
+
+else
+
+  source /etc/autohosts.conf
+  # application has already been set up, all we need to do is tell the app to run normally
+
+fi
+### end setup ###
+
+
+# $FIRSTRUN var is obtained from /etc/automated-hosts.conf
+if [ "$FIRSTRUN" == 0 ];
+then
+
+  # check os type
+  if [[ "$OSTYPE" != "darwin"* ]];
+  then
+
+    # not a mac, use wget
+    wget https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts -O /etc/hosts
+
+  else
+
+    # mac.. use curl, instead
+    cd /etc || exit; curl -O https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
+
+  fi
+
+  echo "Obtaining hosts file from Steven Black's repo..."
+
+  # comment any entry you want to whitelist below with the # as a prefix to the line
+  echo "Done.  Appending additional filters..."
+  echo "0.0.0.0 fonts.gstatic.com" >> /etc/hosts
+  echo "0.0.0.0 graph.facebook.com" >> /etc/hosts
+  echo "0.0.0.0 ads.linkedin.com" >> /etc/hosts
+  echo "0.0.0.0 bidswitch.net" >> /etc/hosts
+  echo "0.0.0.0 rlcdn.com" >> /etc/hosts
+  echo "0.0.0.0 zapier.com" >> /etc/hosts
+  echo "0.0.0.0 swiftype.com" >> /etc/hosts
+
+  # if this is a mac, refresh the dns cache
+  if [[ "$OSTYPE" == "darwin"* ]];
+  then
+    killall -HUP mDNSResponder
+  fi
+
+  # devdom: https://notabug.org/angela/devdom
+  echo "Checking if devdom is installed (will execute devdom hosts update, if so)"
+
+  if [ -e /usr/bin/devdom ];
+  then
+    devdom hosts
+    echo "Devdom hosts have been appended..."
+  else
+    echo "Devdom is not installed; skipping."
+  fi
+
+  echo "Hosts update complete!"
+
+fi
