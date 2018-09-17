@@ -25,7 +25,7 @@ then
     then
 
       # if no cronjob exists, create one
-      crontab -l | { cat; echo "22 19 * * 0 autohosts > /dev/null 2>&1"; } | crontab -
+      crontab -l | { cat; echo "22 19 * * 0 /usr/local/bin/autohosts > /dev/null 2>&1"; } | crontab -
 
       croncheck
       if [ "$EXIST" == 1 ];
