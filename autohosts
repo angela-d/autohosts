@@ -1,5 +1,7 @@
 #!/bin/bash
 
+VERSION=1.1.0
+
 if [[ $EUID -ne 0 ]]; then
   echo "This script must be ran as root, or with sudo privileges."
   exit 1
@@ -39,65 +41,60 @@ then
 
   # set a var that is later used to see if the application has been configured already
   echo FIRSTRUN=0 > /etc/autohosts.conf
+  echo VERSION=$VERSION >> /etc/autohosts.conf
 
   echo "Setup is complete!"
-
-else
-
-  source /etc/autohosts.conf
-  # application has already been set up, all we need to do is tell the app to run normally
 
 fi
 ### end setup ###
 
 
-# $FIRSTRUN var is obtained from /etc/automated-hosts.conf
-if [ "$FIRSTRUN" == 0 ];
+source /etc/autohosts.conf
+
+# check os type
+if [[ "$OSTYPE" != "darwin"* ]];
 then
 
-  # check os type
-  if [[ "$OSTYPE" != "darwin"* ]];
-  then
+  # not a mac, use wget
+  wget https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts -O /etc/hosts
 
-    # not a mac, use wget
-    wget https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts -O /etc/hosts
+else
 
-  else
-
-    # mac.. use curl, instead
-    cd /etc || exit; curl -O https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
-
-  fi
-
-  echo "Obtaining hosts file from Steven Black's repo..."
-
-  # comment any entry you want to whitelist below with the # as a prefix to the line
-  echo "Done.  Appending additional filters..."
-  echo "0.0.0.0 fonts.gstatic.com" >> /etc/hosts
-  echo "0.0.0.0 graph.facebook.com" >> /etc/hosts
-  echo "0.0.0.0 ads.linkedin.com" >> /etc/hosts
-  echo "0.0.0.0 bidswitch.net" >> /etc/hosts
-  echo "0.0.0.0 rlcdn.com" >> /etc/hosts
-  echo "0.0.0.0 zapier.com" >> /etc/hosts
-  echo "0.0.0.0 swiftype.com" >> /etc/hosts
-
-  # if this is a mac, refresh the dns cache
-  if [[ "$OSTYPE" == "darwin"* ]];
-  then
-    killall -HUP mDNSResponder
-  fi
-
-  # devdom: https://notabug.org/angela/devdom
-  echo "Checking if devdom is installed (will execute devdom hosts update, if so)"
-
-  if [ -e /usr/bin/devdom ];
-  then
-    devdom hosts
-    echo "Devdom hosts have been appended..."
-  else
-    echo "Devdom is not installed; skipping."
-  fi
-
-  echo "Hosts update complete!"
+  # mac.. use curl, instead
+  cd /etc || exit; curl -O https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
 
 fi
+
+echo "Obtaining hosts file from Steven Black's repo..."
+
+# comment any entry you want to whitelist below with the # as a prefix to the line
+echo "Done.  Appending additional filters..."
+echo "0.0.0.0 fonts.gstatic.com" >> /etc/hosts
+echo "0.0.0.0 graph.facebook.com" >> /etc/hosts
+echo "0.0.0.0 ads.linkedin.com" >> /etc/hosts
+echo "0.0.0.0 bidswitch.net" >> /etc/hosts
+echo "0.0.0.0 rlcdn.com" >> /etc/hosts
+echo "0.0.0.0 zapier.com" >> /etc/hosts
+echo "0.0.0.0 swiftype.com" >> /etc/hosts
+
+# include LocalFigurez Firefox snooping list
+echo "$(cat firefox-includes)" >> /etc/hosts
+
+# if this is a mac, refresh the dns cache
+if [[ "$OSTYPE" == "darwin"* ]];
+then
+  killall -HUP mDNSResponder
+fi
+
+# devdom: https://notabug.org/angela/devdom
+echo "Checking if devdom is installed (will execute devdom hosts update, if so)"
+
+if [ -e /usr/bin/devdom ];
+then
+  devdom hosts
+  echo "Devdom hosts have been appended..."
+else
+  echo "Devdom is not installed; skipping."
+fi
+
+echo "Hosts update complete!"
