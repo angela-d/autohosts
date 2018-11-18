@@ -19,10 +19,25 @@ If you have an up-to-date hosts file, the risk is severely lessened.
  - Refreshes DNS to instantiate the re-routed changes (Mac Only)
  - If [Devdom](https://notabug.org/angela/devdom) is installed, append all local virtualhosts
 
+### Firefox Snooping list by LocalFigurez added in v1.1.0
+For those of us who want our browser to behave like a browser and not a GPS anklet, this list will prove useful by blocking a [plethora of tracking URLs](firefox-includes).  A few of which, some users have noticed seem to phone home even when the setting is toggled off in about:config.
+
 ## To Install
 ```bash
-git clone https://github.com/angela-d/autohosts.git && sudo ./autohosts
+git clone https://github.com/angela-d/autohosts.git && cd autohosts && sudo ./autohosts
 ```
+
+***
+## To upgrade an existing install
+Clone the repo to /tmp:
+```bash
+git clone https://github.com/angela-d/autohosts.git /tmp && cd autohosts ./uninstall-autohosts
+```
+Then:
+```bash
+./autohosts
+```
+***
 
 The script will take care of the rest!
 
