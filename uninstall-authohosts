@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# uninstalls autohosts
+
+if [[ $EUID -ne 0 ]]; then
+  echo "This script must be ran as root, or with sudo privileges."
+  exit 1
+fi
+
+if [ -f /etc/autohosts.conf ];
+then
+
+  rm /etc/autohosts.conf
+  echo -e "\n\e[32mConfig removed...\e[0m"
+else
+  echo -e "\e[31mAutohosts config not found, skipping...\e[0m"
+
+fi
+
+if [ -f /usr/local/bin/autohosts ];
+then
+
+  rm /usr/local/bin/autohosts
+  echo -e "\e[32mExecutable removed...\e[0m"
+else
+  echo -e "\e[31mAutohosts executable not found, skipping...\e[0m"
+fi
+
+echo -e "\e[33m/etc/hosts will not be modified for uninstallation.\n\e[0m\nDone.\n"
+exit 0
