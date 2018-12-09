@@ -51,21 +51,25 @@ fi
 
 source /etc/autohosts.conf
 
+echo -e "\e[32mObtaining hosts file from Steven Black's repo and LocalFigurez Firefox Telemetry filter...\e[0m"
+
 # check os type
 if [[ "$OSTYPE" != "darwin"* ]];
 then
 
   # not a mac, use wget
   wget https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts -O /etc/hosts
+  # include LocalFigurez Firefox snooping list
+  wget https://raw.githubusercontent.com/angela-d/autohosts/master/firefox-includes -O ->> /etc/hosts
 
 else
 
   # mac.. use curl, instead
   cd /etc || exit; curl -O https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
-
+  # include LocalFigurez Firefox snooping list
+  curl -O https://raw.githubusercontent.com/angela-d/autohosts/master/firefox-includes -O ->> /etc/hosts
 fi
 
-echo "Obtaining hosts file from Steven Black's repo..."
 
 # comment any entry you want to whitelist below with the # as a prefix to the line
 echo "Done.  Appending additional filters..."
@@ -76,9 +80,6 @@ echo "0.0.0.0 bidswitch.net" >> /etc/hosts
 echo "0.0.0.0 rlcdn.com" >> /etc/hosts
 echo "0.0.0.0 zapier.com" >> /etc/hosts
 echo "0.0.0.0 swiftype.com" >> /etc/hosts
-
-# include LocalFigurez Firefox snooping list
-echo "$(cat firefox-includes)" >> /etc/hosts
 
 # if this is a mac, refresh the dns cache
 if [[ "$OSTYPE" == "darwin"* ]];
