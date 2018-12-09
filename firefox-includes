@@ -12,8 +12,6 @@
 0.0.0.0 activity-stream-icons.services.mozilla.com
 0.0.0.0 push.services.mozilla.com
 0.0.0.0 monitor.firefox.com
-0.0.0.0 install.mozilla.org
-0.0.0.0 bg.addons.mozilla.org
 0.0.0.0 accounts.firefox.com
 0.0.0.0 activations.cdn.mozilla.net
 0.0.0.0 api.accounts.firefox.com
@@ -38,7 +36,6 @@
 0.0.0.0 profile.accounts.firefox.com
 0.0.0.0 search.services.mozilla.com
 0.0.0.0 self-repair.mozilla.org
-0.0.0.0 services.addons.mozilla.org
 0.0.0.0 services.mozilla.com
 0.0.0.0 setup.services.mozilla.com
 0.0.0.0 shavar.services.mozilla.com
