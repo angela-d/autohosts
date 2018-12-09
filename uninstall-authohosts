@@ -26,5 +26,12 @@ else
   echo -e "\e[31mAutohosts executable not found, skipping...\e[0m"
 fi
 
-echo -e "\e[33m/etc/hosts will not be modified for uninstallation.\n\e[0m\nDone.\n"
+crontab -u root -l | grep -v '/usr/local/bin/autohosts'  | crontab -u root -
+echo -e "\e[32mAutohosts crontab removed\e[0m"
+
+cp /etc/hosts /tmp/hosts-backup
+echo "0.0.0.0 localhost" > /etc/hosts
+echo -e "\e[33m/etc/hosts has been cleared.  You will need to any custom entries.\n\e[0m\n"
+echo -e "A backup has been temporarily copied to /tmp/hosts-backup if you need to save something from it.\nDone.\n"
+
 exit 0
