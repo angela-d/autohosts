@@ -17,7 +17,6 @@
 0.0.0.0 api.accounts.firefox.com
 0.0.0.0 auth.services.mozilla.com
 0.0.0.0 blocked.cdn.mozilla.net
-0.0.0.0 cdnjs.cloudflare.com
 0.0.0.0 code.cdn.mozilla.net
 0.0.0.0 crash-stats.mozilla.com
 0.0.0.0 crash-stats.mozilla.org
