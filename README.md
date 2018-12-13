@@ -70,5 +70,3 @@ Cron legend:
 
 ### Alternative uses with Hosts files
 - If you're running DD-WRT, you can add a cron to pull a [hosts file for your entire network](https://github.com/angela-d/brain-dump/blob/master/networking/dd-wrt.md) or load [Pi-Hole](https://pi-hole.net/) to a Raspberry Pi.
-
-- Android users can utilize [DNS66](https://f-droid.org/en/packages/org.jak_linux.dns66/) for hosts-based adblocking on mobile devices, without needing a rooted device (useful for gaining back privacy and blocking analytics tracking from being sent all over the place)
