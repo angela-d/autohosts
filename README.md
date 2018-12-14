@@ -21,9 +21,16 @@ If you have an up-to-date hosts file, the risk is severely lessened.
  - Refreshes DNS to instantiate the re-routed changes (Mac Only)
  - If [Devdom](https://notabug.org/angela/devdom) is installed, append all local virtualhosts
  - Uninstall offers the ability to revert to a fresh hosts file and undo any changes made by Autohosts; a backup will be copied to /tmp
+ - Add custom filters from ~/autohosts on your desktop
+
+Installing:
+![Install](./img/install.png)
 
 ### Firefox Snooping list by LocalFigurez added in v1.1.0
 For those of us who want our browser to behave like a browser and not a GPS anklet, this list will prove useful by blocking a [plethora of tracking URLs](firefox-includes).  A few of which, some Firefox users have noticed seem to phone home even when the setting is toggled off in about:config.
+
+### Custom filters added in v1.3.0
+You can easily append any domain you want to blacklist directly from your home directory.  Your custom preferences will be stored with each subsequent update - set it and forget it!
 
 ## To Install
 ```bash
@@ -32,7 +39,10 @@ git clone https://github.com/angela-d/autohosts.git && cd autohosts && sudo ./au
 
 ***
 ## To upgrade an existing install
-v1.10 - present:
+v1.3.0 - present
+- A fresh install of Autohosts is recommended, due to the functional changes of custom filters
+
+v1.1.0 - present:
  - You do not need to uninstall the prior version
  - Simply re-run Autohosts:
  ```bash
@@ -49,9 +59,15 @@ Then:
 ```bash
 ./autohosts
 ```
-***
+
 
 The script will take care of the rest!
+
+***
+
+## Adding custom filters
+Custom filters are loaded to your home directory: `~/autohosts/custom_filters` or `/home/your_username/autohosts/custom_filters`
+- This file can be edited in your favorite text editor; command-line modifications are not necessary!
 
 ### Adjust the cron time
 If your computer is not powered on when the cron is scheduled, you'll miss the update.  Ensure the cronjob is set for a time when you're most likely to have it on.  You can adjust it by running:
@@ -65,6 +81,9 @@ Cron legend:
 * * * * * = minute, hour, day of month, month
 ```
 (`*` = *every*, so 5 straight stars is equal to every minute of every hour of every day and every month.. which you should never run while pulling 3rd party content!)
+
+Uninstalling:
+![Install](./img/uninstall.png)
 
 **Note:** Because this script has to modify `/etc/hosts` - it needs elevated privileges (running as root or a sudo user).  Scripts that require elevated privilenges should be read an analyzed so you know what's being done to your system!  Read the source code of this script (and any others requiring such permissions) before you install.
 
