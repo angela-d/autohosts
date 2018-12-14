@@ -97,7 +97,6 @@
 0.0.0.0 balrog-admin.stage.mozaws.net
 0.0.0.0 balrog-aus5.r53-2.services.mozilla.com
 0.0.0.0 search.r53-2.services.mozilla.com
-0.0.0.0 olympia.prod.mozaws.net
 0.0.0.0 www.mozilla.org.cdn.cloudflare.net
 0.0.0.0 ioncheck.prod.mozaws.net
 0.0.0.0 en-us.phish-error.mozilla.com
