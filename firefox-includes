@@ -12,14 +12,11 @@
 0.0.0.0 activity-stream-icons.services.mozilla.com
 0.0.0.0 push.services.mozilla.com
 0.0.0.0 monitor.firefox.com
-0.0.0.0 install.mozilla.org
-0.0.0.0 bg.addons.mozilla.org
 0.0.0.0 accounts.firefox.com
 0.0.0.0 activations.cdn.mozilla.net
 0.0.0.0 api.accounts.firefox.com
 0.0.0.0 auth.services.mozilla.com
 0.0.0.0 blocked.cdn.mozilla.net
-0.0.0.0 cdnjs.cloudflare.com
 0.0.0.0 code.cdn.mozilla.net
 0.0.0.0 crash-stats.mozilla.com
 0.0.0.0 crash-stats.mozilla.org
@@ -38,7 +35,6 @@
 0.0.0.0 profile.accounts.firefox.com
 0.0.0.0 search.services.mozilla.com
 0.0.0.0 self-repair.mozilla.org
-0.0.0.0 services.addons.mozilla.org
 0.0.0.0 services.mozilla.com
 0.0.0.0 setup.services.mozilla.com
 0.0.0.0 shavar.services.mozilla.com
@@ -101,7 +97,6 @@
 0.0.0.0 balrog-admin.stage.mozaws.net
 0.0.0.0 balrog-aus5.r53-2.services.mozilla.com
 0.0.0.0 search.r53-2.services.mozilla.com
-0.0.0.0 olympia.prod.mozaws.net
 0.0.0.0 www.mozilla.org.cdn.cloudflare.net
 0.0.0.0 ioncheck.prod.mozaws.net
 0.0.0.0 en-us.phish-error.mozilla.com
@@ -150,7 +145,6 @@
 0.0.0.0 r4---sn-f5f7ln7s.gvtl.com
 0.0.0.0 gvtl.com
 0.0.0.0 f5f7ln7s.gvtl.com
-0.0.0.0 discovery.addons.mozilla.org
 0.0.0.0 sb-ssl.google.com
 # added 1.27.19 - android tracking https://support.mozilla.org/en-US/kb/how-do-you-use-adjust-firefox
 app.adjust.com

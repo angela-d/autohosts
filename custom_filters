@@ -1,0 +1,22 @@
+# this file is for custom filters that shouldn't be a part of the global autohosts repository
+# although i may want to block accounts.google.com from those sneaky sso redirects, i realize not everyone does.
+# to add a filter, simply append a newline in similar fashion to the existing custom filters
+# to disable or remove a filter, add a # to the line prefix; vice-versa to enable
+
+
+#0.0.0.0 accounts.google.com
+0.0.0.0 chromestatus.com
+0.0.0.0 fonts.gstatic.com
+0.0.0.0 graph.facebook.com
+0.0.0.0 ads.linkedin.com
+0.0.0.0 bidswitch.net
+0.0.0.0 rlcdn.com
+0.0.0.0 zapier.com
+0.0.0.0 swiftype.com
+
+
+
+# re-run autohosts after modifying this file, so your changes are immediately picked up.  otherwise, they'll 
+# be loaded after next cron update:
+#
+# sudo autohosts

@@ -1,9 +1,34 @@
 #!/bin/bash
 
-VERSION=1.1.0
+VERSION=1.3.0
+
+# get the non-root user, so we can add the custom filters for them
+REGUSER=$(last | grep "logged in" | grep -o '^\S*')
+HOME_USER="/home/$REGUSER/autohosts/"
+
+# initialize reusable stuff, to make the terminal results prettier
+function croncheck() {
+  crontab -l | grep -q 'autohosts' && EXIST=1 || EXIST=0
+}
+
+function green() {
+  echo -e "\e[32m$1\e[0m"
+}
+
+function red() {
+  echo -e "\e[0;31m$1\e[0m"
+}
+
+function brown() {
+  echo -e "\e[0;33m$1\e[0m"
+}
+
+function purple() {
+  echo -e "\e[0;35m$1\e[0m"
+}
 
 if [[ $EUID -ne 0 ]]; then
-  echo "This script must be ran as root, or with sudo privileges."
+  red "This script must be ran as root, or with sudo privileges."
   exit 1
 fi
 
@@ -12,13 +37,13 @@ fi
 if [ ! -e /etc/autohosts.conf ];
 then
 
-  function croncheck() {
-    crontab -l | grep -q 'autohosts' && EXIST=1 || EXIST=0
-  }
-
   # move the script to /usr/local/bin so it can be executed as an alias
-  echo "Creating an alias for autohosts.."
+  green "Creating an alias for autohosts.."
   cp autohosts /usr/local/bin/ && chmod +x /usr/local/bin/autohosts
+
+  # migrate custom filters file to the user's home directory
+  green "Creating custom filters directory at $REGUSER"
+  mkdir "$HOME_USER" && cp custom_filters "$HOME_USER" && chown "$REGUSER:$REGUSER" -R "$HOME_USER"
 
   # double-check to ensure we don't have a conflicting cron
   croncheck
@@ -32,9 +57,9 @@ then
       croncheck
       if [ "$EXIST" == 1 ];
       then
-        echo "Cronjob created..."
+        green "Cronjob created..."
       else
-        echo "There was a problem creating the cronjob, you might have to create it manually!"
+        red "There was a problem creating the cronjob, you might have to create it manually!"
       fi
 
   fi
@@ -43,7 +68,7 @@ then
   echo FIRSTRUN=0 > /etc/autohosts.conf
   echo VERSION=$VERSION >> /etc/autohosts.conf
 
-  echo "Setup is complete!"
+  purple "Setup is complete!"
 
 fi
 ### end setup ###
@@ -51,34 +76,35 @@ fi
 
 source /etc/autohosts.conf
 
+purple "== UPDATING =="
+green "Obtaining hosts file from Steven Black's repo and LocalFigurez Firefox Telemetry filter..."
+
 # check os type
 if [[ "$OSTYPE" != "darwin"* ]];
 then
 
   # not a mac, use wget
   wget https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts -O /etc/hosts
+  # include LocalFigurez Firefox snooping list
+  wget https://raw.githubusercontent.com/angela-d/autohosts/master/firefox-includes -O ->> /etc/hosts
 
 else
 
   # mac.. use curl, instead
   cd /etc || exit; curl -O https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
-
+  # include LocalFigurez Firefox snooping list
+  curl -O https://raw.githubusercontent.com/angela-d/autohosts/master/firefox-includes -O ->> /etc/hosts
 fi
 
-echo "Obtaining hosts file from Steven Black's repo..."
+# check for and include any custom filters
+if [ -e "$HOME_USER"custom_filters ];
+then
 
-# comment any entry you want to whitelist below with the # as a prefix to the line
-echo "Done.  Appending additional filters..."
-echo "0.0.0.0 fonts.gstatic.com" >> /etc/hosts
-echo "0.0.0.0 graph.facebook.com" >> /etc/hosts
-echo "0.0.0.0 ads.linkedin.com" >> /etc/hosts
-echo "0.0.0.0 bidswitch.net" >> /etc/hosts
-echo "0.0.0.0 rlcdn.com" >> /etc/hosts
-echo "0.0.0.0 zapier.com" >> /etc/hosts
-echo "0.0.0.0 swiftype.com" >> /etc/hosts
-
-# include LocalFigurez Firefox snooping list
-echo "$(cat firefox-includes)" >> /etc/hosts
+  green "Processing custom filters..."
+  cat "$HOME_USER"'custom_filters' >> /etc/hosts
+else
+  brown "No custom filters found at home_user, skipping..."
+fi
 
 # if this is a mac, refresh the dns cache
 if [[ "$OSTYPE" == "darwin"* ]];
@@ -87,14 +113,14 @@ then
 fi
 
 # devdom: https://notabug.org/angela/devdom
-echo "Checking if devdom is installed (will execute devdom hosts update, if so)"
+green "Checking if devdom is installed (will execute devdom hosts update, if so)"
 
 if [ -e /usr/bin/devdom ];
 then
   devdom hosts
-  echo "Devdom hosts have been appended..."
+    green "devdom hosts have been appended..."
 else
-  echo "Devdom is not installed; skipping."
+  brown "Devdom is not installed; skipping."
 fi
 
-echo "Hosts update complete!"
+purple "Hosts update complete!"
