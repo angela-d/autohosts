@@ -93,7 +93,7 @@ else
   # mac.. use curl, instead
   curl -O https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts > /etc/hosts
   # append LocalFigurez Firefox snooping list
-  https://raw.githubusercontent.com/angela-d/autohosts/master/firefox-includes >> /etc/hosts
+  curl https://raw.githubusercontent.com/angela-d/autohosts/master/firefox-includes >> /etc/hosts
 fi
 
 # check for and include any custom filters
