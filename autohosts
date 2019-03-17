@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION=1.3.0
+VERSION=1.3.1
 
 # get the non-root user, so we can add the custom filters for them
 REGUSER=$(last | grep "logged in" | grep -o '^\S*')
@@ -95,6 +95,10 @@ else
   # append LocalFigurez Firefox snooping list
   curl https://raw.githubusercontent.com/angela-d/autohosts/master/firefox-includes >> /etc/hosts
 fi
+
+# hosts file curators: please keep your echo chambers to yourselves
+# hosts files are for adblocking, trackers and malware ONLY, not because you don't like shitposting sites (may as well ban reddit, too!)
+sed -i "/kiwifarms/d" /etc/hosts
 
 # check for and include any custom filters
 if [ -e "$HOME_USER"custom_filters ];
