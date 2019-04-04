@@ -39,10 +39,15 @@ git clone https://github.com/angela-d/autohosts.git && cd autohosts && sudo ./au
 
 ***
 ## To upgrade an existing install
-v1.3.0 - present
+To see which version you're running on your system: `grep "VERSION=" /usr/local/bin/autohosts`
+
+v1.3.1 - present
+- No core changes; Autohosts will update anything of significance on schedule; modification to the repo isn't necessary, unless you want any of the [minor changes](releases).  You can confirm it's latest date of update by running: `grep "# Date:" /etc/hosts`
+
+v1.3.0:
 - A fresh install of Autohosts is recommended, due to the functional changes of custom filters
 
-v1.1.0 - present:
+v1.1.0:
  - You do not need to uninstall the prior version
  - Simply re-run Autohosts:
  ```bash
