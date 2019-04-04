@@ -149,3 +149,13 @@
 # added 1.27.19 - android tracking https://support.mozilla.org/en-US/kb/how-do-you-use-adjust-firefox
 app.adjust.com
 adjust.com
+
+# The following is not Firefox-related, but upstream haven't yet added these marketing/tracking domains
+# In the event they are added upstream, easy removal of duplicates by temporarily appending here
+0.0.0.0 hubspot.net
+0.0.0.0 cdn2.hubspot.net
+
+# wtf is pendio? Their site is typical amorphic marketing drivel that tells you nothing much about what they do.
+# I've seen it load unnecessary 3rd party scripts on enough sites to get suspicious of their intentions, hence addition to the filters
+0.0.0.0 pendio.io
+0.0.0.0 www.pendio.io
