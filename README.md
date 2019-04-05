@@ -42,7 +42,7 @@ git clone https://github.com/angela-d/autohosts.git && cd autohosts && sudo ./au
 To see which version you're running on your system: `grep "VERSION=" /usr/local/bin/autohosts`
 
 v1.3.1 - present
-- No core changes; Autohosts will update anything of significance on schedule; modification to the repo isn't necessary, unless you want any of the [minor changes](releases).  You can confirm it's latest date of update by running: `grep "# Date:" /etc/hosts`
+- No core changes; Autohosts will update the filters on your schedule; modification to the repo isn't necessary, unless you want any of the [minor changes](releases).  You can confirm it's latest date of update by running: `grep "# Date:" /etc/hosts`
 
 v1.3.0:
 - A fresh install of Autohosts is recommended, due to the functional changes of custom filters
@@ -54,7 +54,7 @@ v1.1.0:
  git clone https://github.com/angela-d/autohosts.git /tmp && cd autohosts ./autohosts
  ```
 
- Versions prior to 1.1.0:
+Versions prior to 1.1.0:
 
 - Clone the repo to /tmp:
 ```bash
@@ -71,7 +71,16 @@ The script will take care of the rest!
 ***
 
 ## Adding custom filters
-Custom filters are loaded to your home directory: `~/autohosts/custom_filters` or `/home/your_username/autohosts/custom_filters`
+Custom filters are loaded to your home directory:
+
+**Linux:**
+
+`~/autohosts/custom_filters` or `/home/your_username/autohosts/custom_filters`
+
+
+**MacOS**
+
+`~/autohosts/custom_filters` or `/Users/your_username/autohosts/custom_filters`
 - This file can be edited in your favorite text editor; command-line modifications are not necessary!
 
 ### Adjust the cron time
