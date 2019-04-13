@@ -92,7 +92,7 @@ and modifying the dates to suit.
 
 Cron legend:
 ```html
-* * * * * = minute, hour, day of month, month
+* * * * * = minute, hour, day of month, month, day of week (0 = Sunday, 6 = Saturday)
 ```
 (`*` = *every*, so 5 straight stars is equal to every minute of every hour of every day and every month.. which you should never run while pulling 3rd party content!)
 
