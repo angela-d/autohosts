@@ -99,7 +99,7 @@ Cron legend:
 Uninstalling:
 ![Install](./img/uninstall.png)
 
-**Note:** Because this script has to modify `/etc/hosts` - it needs elevated privileges (running as root or a sudo user).  Scripts that require elevated privilenges should be read and analyzed so you know what's being done to your system!  Read the source code of this script (and any others requiring such permissions) before you install.
+**Note:** Because this script has to modify `/etc/hosts` - it needs elevated privileges (running as root or a sudo user).  Scripts that require elevated privileges should be read and analyzed so you know what's being done to your system!  Read the source code of this script (and any others requiring such permissions) before you install.
 
 ### Alternative uses with Hosts files
 - If you're running DD-WRT, you can add a cron to pull a [hosts file for your entire network](https://github.com/angela-d/brain-dump/blob/master/networking/dd-wrt.md) or load [Pi-Hole](https://pi-hole.net/) to a Raspberry Pi.
