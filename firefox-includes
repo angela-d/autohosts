@@ -151,6 +151,7 @@
 # In the event they are added upstream, easy removal of duplicates by temporarily appending here
 0.0.0.0 hubspot.net
 0.0.0.0 cdn2.hubspot.net
+0.0.0.0 servebom.com
 
 # wtf is pendio? Their site is typical amorphic marketing drivel that tells you nothing much about what they do.
 # I've seen it load unnecessary 3rd party scripts on enough sites to get suspicious of their intentions, hence addition to the filters
