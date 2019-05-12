@@ -146,9 +146,6 @@
 0.0.0.0 gvtl.com
 0.0.0.0 f5f7ln7s.gvtl.com
 0.0.0.0 sb-ssl.google.com
-# added 1.27.19 - android tracking https://support.mozilla.org/en-US/kb/how-do-you-use-adjust-firefox
-app.adjust.com
-adjust.com
 
 # The following is not Firefox-related, but upstream haven't yet added these marketing/tracking domains
 # In the event they are added upstream, easy removal of duplicates by temporarily appending here
