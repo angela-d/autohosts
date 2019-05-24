@@ -1,0 +1,2 @@
+debian/source/autohosts	/usr/bin
+debian/source/custom_filters	/usr/include/autohosts
