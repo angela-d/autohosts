@@ -1,0 +1,66 @@
+#!/bin/bash
+
+# uninstalls autohosts
+
+# reused code from autohosts; we can't rely on both files always existing (if the user clones to /tmp, for example)
+REGUSER=$(last | grep "logged in" | grep -o '^\S*')
+HOME_USER="/home/$REGUSER/autohosts/"
+
+function green() {
+  echo -e "\e[32m$1\e[0m"
+}
+
+function red() {
+  echo -e "\e[0;31m$1\e[0m"
+}
+
+function brown() {
+  echo -e "\e[0;33m$1\e[0m"
+}
+
+function purple() {
+  echo -e "\e[0;35m$1\e[0m"
+}
+
+if [[ $EUID -ne 0 ]]; then
+  red "This script must be ran as root, or with sudo privileges."
+  exit 1
+fi
+
+if [ -f /etc/autohosts.conf ];
+then
+
+  rm /etc/autohosts.conf
+  green "Config removed..."
+else
+  red "Autohosts config not found, skipping..."
+
+fi
+
+if [ -f /usr/local/bin/autohosts ];
+then
+
+  rm /usr/local/bin/autohosts
+  green "Executable removed..."
+else
+  red "Autohosts executable not found, skipping..."
+fi
+
+if [ -d $HOME_USER ];
+then
+
+  rm -rf "$HOME_USER"
+  green "Custom filters removed..."
+else
+  red "Custom filters not found, skipping..."
+fi
+
+crontab -u root -l | grep -v '/usr/local/bin/autohosts'  | crontab -u root -
+green "Autohosts crontab removed"
+
+cp /etc/hosts /tmp/hosts-backup
+echo "0.0.0.0 localhost" > /etc/hosts
+green "/etc/hosts has been cleared.  You will need to re-add any custom entries."
+purple "A backup has been temporarily copied to /tmp/hosts-backup if you need to save something from it.\nDone.\n"
+
+exit 0
