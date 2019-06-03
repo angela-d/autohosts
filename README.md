@@ -45,7 +45,7 @@ git clone https://github.com/angela-d/autohosts.git && cd autohosts && sudo ./au
 
 ***
 ## To upgrade an existing install
-To see which version you're running on your system: `grep "VERSION=" /usr/local/bin/autohosts`
+To see which version you're running on your system: `grep "VERSION=" /etc/autohosts.conf`
 
 
 ### Versions prior to 2.0.0:
