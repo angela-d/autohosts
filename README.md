@@ -51,15 +51,15 @@ To see which version you're running on your system: `grep "VERSION=" /etc/autoho
 ### Versions prior to 2.0.0:
 Due to structural changes in the codebase, an uninstall and reinstall is necessary.  You can do this without losing your custom filters.
 ```bash
-git clone https://github.com/angela-d/autohosts.git /tmp &&
+git clone https://github.com/angela-d/autohosts.git /tmp/autohosts &&
 cd autohosts &&
-cp ~/autohosts/custom_filters /tmp &&
+cp ~/autohosts/custom_filters /tmp/custom_filters &&
 sudo ./prior-v2-uninstall
 ```
 Run your preferred method of installation to get v2.0.0.  Once installation completes, restore your custom filters:
 ```bash
 rm ~/autohosts/custom_filters &&
-mv /tmp/custom_filters ~/autohosts
+mv /tmp/custom_filters ~/autohosts/custom_filters
 ```
 
 ***
