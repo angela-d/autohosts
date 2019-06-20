@@ -157,3 +157,7 @@
 # I've seen it load unnecessary 3rd party scripts on enough sites to get suspicious of their intentions, hence addition to the filters
 0.0.0.0 pendio.io
 0.0.0.0 www.pendio.io
+
+# tracking pixel/potential adblocker warning popup
+0.0.0.0 summerhamster.com
+0.0.0.0 www.summerhamster.com
