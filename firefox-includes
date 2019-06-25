@@ -161,3 +161,6 @@
 # tracking pixel/potential adblocker warning popup
 0.0.0.0 summerhamster.com
 0.0.0.0 www.summerhamster.com
+
+# fraud prevention suite by a reputable company, but relies on data compilation and tracking
+0.0.0.0 thisdata.com
