@@ -11,7 +11,7 @@ Despite what some may suggest, hosts files are not "1980s technology" and still 
 
 Hosts file are a useful redundancy when coupled with ad blockers like [uBlock Origin](https://github.com/gorhill/uBlock) and [uMatrix](https://github.com/gorhill/uMatrix) - while debugging or 'Temporarily Allow All on this Site' with [Noscript](https://noscript.net/) can open you up to underlying attacks or privacy intrusions.
 
-In-browser filters won't protect you if the browser itself is phoning home.
+**In-browser filters won't protect you if the [browser itself](https://spyware.neocities.org/articles/firefox.html) is [phoning home](https://dustri.org/b/mozilla-is-still-screwing-around-with-privacy-in-firefox.html).**
 
 If you have an up-to-date hosts file, the risk is severely lessened.
 
