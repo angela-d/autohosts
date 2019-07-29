@@ -56,7 +56,7 @@ then
   if [ -f custom_filters ] && [ ! -d "$HOME_USER" ];
   then
     green "Creating custom filters directory for $REGUSER"
-    mkdir "$HOME_USER" && cp custom_filters "$HOME_USER" && chown "$REGUSER:$REGUSER" -R "$HOME_USER"
+    mkdir "$HOME_USER" && cp custom_filters "$HOME_USER" && cp whitelist "$HOME_USER" && chown "$REGUSER:$REGUSER" -R "$HOME_USER"
   fi
 
   # double-check to ensure we don't have a conflicting cron
@@ -140,7 +140,7 @@ then
 
   for whitelist in $(cat "$HOME_USER"whitelist);
   do
-    
+
     echo "$whitelist removed, per whitelist rule"
     sed -i "/$whitelist/d" /etc/hosts
   done
