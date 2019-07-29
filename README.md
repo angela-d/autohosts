@@ -1,6 +1,10 @@
 # Auto Update Ad-blocking Hosts file on Linux and Mac
 
-Automate the hosts file process with cronjobs.
+Automate hosts file updates on Linux-based and MacOS systems.
+
+## v2.0.1 Changes
+- Bugfixes (deb installer)
+- Whitelist capabilities added
 
 ### Purpose of Hosts Files
 Hosts files will reroute unwanted traffic from ad farms, behavioral tracking firms and malware sites to a blackhole; routing to 0.0.0.0 (localhost; your PC) when a request is made to a URL on the blacklist.
@@ -26,11 +30,16 @@ If you have an up-to-date hosts file, the risk is severely lessened.
 Installing:
 ![Install](./img/install.png)
 
-### Firefox Snooping list by LocalFigurez
+### Firefox Snooping list, originally by LocalFigurez
 For those of us who want our browser to behave like a browser and not a GPS anklet, this list will prove useful by blocking a [plethora of tracking URLs](firefox-includes).  A few of which, some Firefox users have noticed seem to phone home even when the setting is toggled off in about:config.
 
 ### Custom filters
 You can easily append any domain you want to blacklist directly from your home directory.  Your custom preferences will be stored with each subsequent update - set it and forget it!
+
+### Whitelisting
+If the upstream list curators block a domain you want to see, add it to `~/autohosts/whitelist` and run `sudo autohosts`
+
+Be sure to add nothing other than the domain(s) you want to whitelist to this file!  I added 3 examples to the default whitelist file; you can regex it (TLD domain with no prefix or suffix, to whitelist subdomains, too: `example`) or supply a full TLD: `www.example.com`
 
 ## To Install
 Debian-based Linux distros:
@@ -42,6 +51,7 @@ MacOS or non-Debian-based Linux distros:
 ```bash
 git clone https://github.com/angela-d/autohosts.git && cd autohosts && sudo ./autohosts
 ```
+That's it !
 
 ***
 ## To upgrade an existing install
@@ -64,18 +74,33 @@ mv /tmp/custom_filters ~/autohosts/custom_filters
 
 ***
 
-## Adding custom filters
+## Adding Custom Blacklists or Whitelists
+- These files can be edited in your favorite text editor; command-line modifications are not necessary!
+
 Custom filters are loaded to your home directory:
 
 **Linux:**
 
+Blacklist:
+
 `~/autohosts/custom_filters` or `/home/your_username/autohosts/custom_filters`
 
+Whitelist:
+
+`~/autohosts/whitelist` or `/home/your_username/autohosts/whitelist`
+
+***
 
 **MacOS**
 
+Blacklist:
+
 `~/autohosts/custom_filters` or `/Users/your_username/autohosts/custom_filters`
-- This file can be edited in your favorite text editor; command-line modifications are not necessary!
+
+Whitelist:
+
+`~/autohosts/whitelist` or `/Users/your_username/autohosts/whitelist`
+
 
 ### Adjust the cron time
 If your computer is not powered on when the cron is scheduled, you'll miss the update.  Ensure the cronjob is set for a time when you're most likely to have it on.  You can adjust it by running:
@@ -100,3 +125,4 @@ Uninstalling:
 - If you're running DD-WRT, you can add a cron to pull a [hosts file for your entire network](https://github.com/angela-d/brain-dump/blob/master/networking/dd-wrt.md) or load [Pi-Hole](https://pi-hole.net/) to a Raspberry Pi.
 - OpenWRT also has [network-based adblocking](https://github.com/angela-d/brain-dump/blob/master/networking/openwrt-site-blocking.md) capabilities.
 - Rooted Android devices can utilize hosts files, too; simply load the hosts file via `adb push` to `/etc/hosts`
+- If you have to use Windows, [Unified Hosts Autoupdate](https://github.com/ScriptTiger/Unified-Hosts-AutoUpdate) offers similar capabilities to Autohosts, in a Windows environment
