@@ -1,0 +1,5 @@
+autohosts (2.0.1) stable; urgency=low
+
+  * Post-install bugfix
+
+ -- Angela <angela@disroot.org>  Fri, 26 Jul 2019 23:25:18 -0500

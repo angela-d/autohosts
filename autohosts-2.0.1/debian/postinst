@@ -1,0 +1,25 @@
+#!/bin/bash
+set -e
+
+# copy the custom_filters into the user's home directory
+# get the non-root user, so we can add the custom filters for them
+REGUSER=$(last | grep "logged in" | grep -o '^\S*')
+HOME_USER="/home/$REGUSER/autohosts/"
+
+# create the home directory files
+if [ ! -f "$HOME_USER"custom_filters ];
+then
+  mkdir "$HOME_USER" && cp /usr/include/autohosts/custom_filters "$HOME_USER" &&
+  cp -n /usr/include/autohosts/whitelist "$HOME_USER" && chown "$REGUSER:$REGUSER" -R "$HOME_USER"
+fi
+
+# error check to make sure everything is as it should be
+if [ ! -e /usr/bin/autohosts ];
+then
+
+  # missing script.. symlink it
+  chmod +x /usr/include/autohosts/autohosts && ln -s /usr/include/autohosts/autohosts /usr/bin/autohosts
+fi
+
+# run autohosts after installing or finishing updgrade
+autohosts
