@@ -117,11 +117,6 @@ else
   brown "No custom filters found at home_user, skipping..."
 fi
 
-# if this is a mac, refresh the dns cache
-if [[ "$OSTYPE" == "darwin"* ]];
-then
-  killall -HUP mDNSResponder
-fi
 
 # devdom: https://notabug.org/angela/devdom
 green "Checking if devdom is installed (will execute devdom hosts update, if so)"
@@ -146,5 +141,13 @@ then
   done
   wait
 fi
+
+
+# if this is a mac, refresh the dns cache
+if [[ "$OSTYPE" == "darwin"* ]];
+then
+  killall -HUP mDNSResponder
+fi
+
 
 purple "Hosts update complete!"
