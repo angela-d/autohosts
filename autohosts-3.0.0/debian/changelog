@@ -1,0 +1,6 @@
+autohosts (3.0.0) stable; urgency=low
+
+  * Custom hosts curators option added
+  * Bugfixes and improvements
+
+ -- Angela <angela@disroot.org>  Thu, 08 Aug 2019 22:29:32 -0500
