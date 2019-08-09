@@ -1,17 +1,19 @@
 #!/bin/bash
 
-VERSION=2.0.1
+VERSION=3.0.0
 
 # get the non-root user, so we can add the custom filters for them
-REGUSER=$(last | grep "logged in" | grep -o '^\S*')
+REGUSER=$(last | grep "logged in" | grep -o '^\S*' | head -1)
 
 # check os type for home directory path
 if [[ "$OSTYPE" != "darwin"* ]];
 then
   HOME_USER="/home/$REGUSER/autohosts/"
+  AUTOHOSTS_PATH="/usr/bin/autohosts"
 else
   # macos
   HOME_USER="/Users/$REGUSER/autohosts/"
+  AUTOHOSTS_PATH="/usr/local/bin/autohosts"
 fi
 
 # initialize reusable stuff, to make the terminal results prettier
@@ -20,20 +22,57 @@ function croncheck() {
 }
 
 function green() {
-  echo -e "\e[32m$1\e[0m"
+  echo -e "\033[32m$1\033[0m"
 }
 
 function red() {
-  echo -e "\e[0;31m$1\e[0m"
+  echo -e "\033[0;31m$1\033[0m"
 }
 
 function brown() {
-  echo -e "\e[0;33m$1\e[0m"
+  echo -e "\033[0;33m$1\033[0m"
 }
 
 function purple() {
-  echo -e "\e[0;35m$1\e[0m"
+  echo -e "\033[0;35m$1\033[0m"
 }
+
+# append a notice to the terminal when an upstream list has been added
+function append() {
+  green ">> $1 upstream successfully appended..."
+}
+
+# check for the existence of the upstream hosts file before downloading, to prevent malformed data
+function upstream(){
+  # see if we're dealing with a linux-based distro or mac
+  if [[ "$OSTYPE" != "darwin"* ]];
+  then
+
+    # not a mac, use wget
+    if [[ "$(wget --spider "$1"  2>&1 | grep '200 OK')" ]];
+    then
+      # file exists! collect it
+      wget "$1" -O ->> /etc/hosts
+      append "$hosts_source"
+    else
+      logger -s "Autohosts update: $1 appears to be offline, skipping..."
+    fi
+
+  else
+
+    # is a mac, use curl, no guarantee gnu tools are installed & unnecessary as a dependency, imo
+    if [[ "$(curl -I "$1" 2>/dev/null | head -n 1 | cut -d$' ' -f2)" == '200' ]];
+    then
+      # file exists! collect it
+      curl "$1" >> /etc/hosts
+      append "$hosts_source"
+    else
+      logger -s "Autohosts update: $1 appears to be offline, skipping..."
+    fi
+
+  fi
+}
+
 
 if [[ $EUID -ne 0 ]]; then
   red "This script must be ran as root, or with sudo privileges."
@@ -46,17 +85,20 @@ if [ ! -e /etc/autohosts.conf ];
 then
 
   # move the script to /usr/bin so it can be executed as an alias
-  if [ -f ./autohosts ] && [ ! -f /usr/bin/autohosts ];
+  if [ -f autohosts ] && [ ! -f "$AUTOHOSTS_PATH" ];
   then
     green "Creating an alias for autohosts.."
-    cp autohosts /usr/bin/ && chmod +x /usr/bin/autohosts
+    cp autohosts "$AUTOHOSTS_PATH" && chmod +x "$AUTOHOSTS_PATH"
   fi
 
   # migrate custom filters file to the user's home directory
   if [ -f custom_filters ] && [ ! -d "$HOME_USER" ];
   then
-    green "Creating custom filters directory for $REGUSER"
-    mkdir "$HOME_USER" && cp custom_filters "$HOME_USER" && cp whitelist "$HOME_USER" && chown "$REGUSER:$REGUSER" -R "$HOME_USER"
+    green "Creating custom filters for $REGUSER..."
+    mkdir -p "$HOME_USER" && cp custom_filters "$HOME_USER"custom_filters && cp whitelist "$HOME_USER"whitelist
+
+    green "Creating skeleton upstream file..."
+    cp hosts_source "$HOME_USER" && chown "$REGUSER:$REGUSER" -R "$HOME_USER"
   fi
 
   # double-check to ensure we don't have a conflicting cron
@@ -65,8 +107,15 @@ then
   if [ "$EXIST" == 0 ];
     then
 
+      # see if we are root or sudo; if sudo, we need to append sudo to the cron trigger
+      if [ "$(whoami)" == "root" ] ; then
+        CRON_PATH="$AUTOHOSTS_PATH"
+      else
+        CRON_PATH="sudo $AUTOHOSTS_PATH"
+      fi
+
       # if no cronjob exists, create one
-      crontab -l | { cat; echo "22 19 * * 0 /usr/bin/autohosts > /dev/null 2>&1"; } | crontab -
+      crontab -l | { cat; echo "22 19 * * 0 $CRON_PATH > /dev/null 2>&1"; } | crontab -
 
       croncheck
       if [ "$EXIST" == 1 ];
@@ -78,32 +127,38 @@ then
 
   fi
 
-  # set a var that can be later referenced to see if the application has been configured already
-  echo VERSION=$VERSION > /etc/autohosts.conf
-
   purple "Setup is complete!"
 
 fi
 ### end setup ###
 
 purple "== UPDATING =="
-green "Obtaining hosts file from Steven Black's repo and LocalFigurez Firefox Telemetry filter..."
 
-# check os type
-if [[ "$OSTYPE" != "darwin"* ]];
+# check hosts_source for a list of preferred upstreams
+if [ -f "$HOME_USER"hosts_source ];
 then
 
-  # not a mac, use wget
-  wget https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts -O /etc/hosts
-  # include LocalFigurez Firefox snooping list
-  wget https://raw.githubusercontent.com/angela-d/autohosts/master/firefox-includes -O ->> /etc/hosts
+  # start with a clean slate
+  echo "" > /etc/hosts
+  green "Obtaining hosts lists from preferred upstream sources..."
 
-else
+  # loop any hosts specified by the user in hosts_source and do an existence check
+  for hosts_source in $(cat "$HOME_USER"hosts_source);
+  do
 
-  # mac.. use curl, instead
-  curl -O https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts > /etc/hosts
-  # append LocalFigurez Firefox snooping list
-  curl https://raw.githubusercontent.com/angela-d/autohosts/master/firefox-includes >> /etc/hosts
+    upstream "$hosts_source"
+
+  done
+  wait
+fi
+
+
+# courtesy check for localhost to prevent loopback breakage if a preferred upstream doesn't specify such
+if  ! grep -q "127.0.0.1 localhost" /etc/hosts;
+then
+  red "No upstream source has a courtesy entry for localhost!  Adding one..."
+  echo "127.0.0.1 localhost" >> /etc/hosts
+  echo "255.255.255.255 broadcasthost" >> /etc/hosts
 fi
 
 
@@ -113,8 +168,11 @@ then
 
   green "Processing custom filters..."
   cat "$HOME_USER"'custom_filters' >> /etc/hosts
+
 else
-  brown "No custom filters found at home_user, skipping..."
+
+  brown "No custom filters found at $HOME_USER""custom_filters, skipping..."
+
 fi
 
 
@@ -123,10 +181,10 @@ green "Checking if devdom is installed (will execute devdom hosts update, if so)
 
 if [ -e /usr/bin/devdom ];
 then
+  # devdom will echo a notice when ran
   devdom hosts
-    green "devdom hosts have been appended..."
 else
-  brown "Devdom is not installed; skipping."
+  brown "Devdom is not installed; skipping Devdom hosts."
 fi
 
 # apply any whitelisted entries
@@ -136,18 +194,26 @@ then
   for whitelist in $(cat "$HOME_USER"whitelist);
   do
 
-    echo "$whitelist removed, per whitelist rule"
-    sed -i "/$whitelist/d" /etc/hosts
+    green "Checking for $whitelist.. whitelisting any match."
+    if [[ "$OSTYPE" != "darwin"* ]];
+    then
+      sed -i "/$whitelist/d" /etc/hosts
+    else
+      # osx is weird and expects an extension to be called, so lets set to null
+      sed -i '' "/$whitelist/d" /etc/hosts
+    fi
+
   done
   wait
 fi
 
+# set a var that can be later referenced to see if the application has been configured already
+echo VERSION=$VERSION > /etc/autohosts.conf
 
 # if this is a mac, refresh the dns cache
 if [[ "$OSTYPE" == "darwin"* ]];
 then
   killall -HUP mDNSResponder
 fi
-
 
 purple "Hosts update complete!"
