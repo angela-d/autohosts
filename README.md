@@ -1,10 +1,16 @@
-# Auto Update Ad-blocking Hosts file on Linux and Mac
+# Auto Update Ad-blocking Hosts file on Linux and Mac Systems
 
 Automate hosts file updates on Linux-based and MacOS systems.
 
-## v2.0.1 Changes
-- Bugfixes (deb installer)
-- Whitelist capabilities added
+![Linux](./img/linux.png)
+![Mac](./img/mac.png)
+
+## v3.0.0 Changes
+**Freedom of choice!**
+
+- You can now utilize your own choice upstream hosts curators, rather than being content with the (previously) hardcoded host list by Steven Black.
+
+- Logic improvements and bugfixes
 
 ### Purpose of Hosts Files
 Hosts files will reroute unwanted traffic from ad farms, behavioral tracking firms and malware sites to a blackhole; routing to 0.0.0.0 (localhost; your PC) when a request is made to a URL on the blacklist.
@@ -58,20 +64,21 @@ That's it !
 To see which version you're running on your system: `grep "VERSION=" /etc/autohosts.conf`
 
 
-### Versions prior to 2.0.0:
-Due to structural changes in the codebase, an uninstall and reinstall is necessary.  You can do this without losing your custom filters.
+### Versions prior to 3.0.0:
+Due to structural changes in the codebase, an uninstall and reinstall is recommended (unless installed via deb).  You can do this without losing your custom filters.
 ```bash
 git clone https://github.com/angela-d/autohosts.git /tmp/autohosts &&
 cd autohosts &&
 cp ~/autohosts/custom_filters /tmp/custom_filters &&
 sudo ./prior-v2-uninstall
 ```
-Run your preferred method of installation to get v2.0.0.  Once installation completes, restore your custom filters:
+Run your preferred method of installation to get v3.0.0.  Once installation completes, restore your custom filters:
 ```bash
 rm ~/autohosts/custom_filters &&
 mv /tmp/custom_filters ~/autohosts/custom_filters
 ```
 
+Debian users: Simply `apt install ./autohosts.deb` to upgrade to the latest version.
 ***
 
 ## Adding Custom Blacklists or Whitelists
@@ -79,33 +86,28 @@ mv /tmp/custom_filters ~/autohosts/custom_filters
 
 Custom filters are loaded to your home directory:
 
-**Linux:**
 
-Blacklist:
+| Filter Option  | ![Linux](./img/linux.png) Linux File Location | ![Mac](./img/mac.png) Mac File Location|
+| ------------- |:-------------:| :-----:|
+| **Blacklist**      | `~/autohosts/custom_filters` or `/home/your_username/autohosts/custom_filters` | `~/autohosts/custom_filters` or `/Users/your_username/autohosts/custom_filters` |
+| **Whitelist**      | `~/autohosts/whitelist` or `/home/your_username/autohosts/whitelist`      |   `~/autohosts/whitelist` or `/Users/your_username/autohosts/whitelist` |
+| **Hosts List Curator** | `~/autohosts/hosts_source` or `/home/your_username/autohosts/hosts_source` | `~/autohosts/hosts_source` or `/Users/your_username/autohosts/hosts_source` |
 
-`~/autohosts/custom_filters` or `/home/your_username/autohosts/custom_filters`
 
-Whitelist:
 
-`~/autohosts/whitelist` or `/home/your_username/autohosts/whitelist`
 
-***
+### Choosing Hosts Curators
+Use as many as you'd like, to strengthen your filtering.  Though it would be wise to keep the total to a reasonable amount; as there is not currently any duplicate removal, so the potential for unneeded overhead is certain.
 
-**MacOS**
+List each curator on a separate line in `~/autohosts/hosts_source` - do not add any comments or whitespace to this file - just a list of the [**raw**](https://github.com/StevenBlack/hosts/blob/master/hosts?raw=true) hosts source.  (ie. the plain-text filters).
 
-Blacklist:
-
-`~/autohosts/custom_filters` or `/Users/your_username/autohosts/custom_filters`
-
-Whitelist:
-
-`~/autohosts/whitelist` or `/Users/your_username/autohosts/whitelist`
+When an update is ran, Autohosts will probe each curator to ensure the list is responding with a 200/OK response, so the potential for indexing garbled junk to your hosts file is severely lessened.
 
 
 ### Adjust the cron time
 If your computer is not powered on when the cron is scheduled, you'll miss the update.  Ensure the cronjob is set for a time when you're most likely to have it on.  You can adjust it by running:
 ```bash
-crontab -e
+sudo crontab -e
 ```
 and modifying the dates to suit.
 
