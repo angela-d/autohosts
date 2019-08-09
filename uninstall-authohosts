@@ -2,78 +2,74 @@
 
 # uninstalls autohosts
 
+function green() {
+  echo -e "\033[32m$1\033[0m"
+}
+
+function red() {
+  echo -e "\033[0;31m$1\033[0m"
+}
+
+function brown() {
+  echo -e "\033[0;33m$1\033[0m"
+}
+
+function purple() {
+  echo -e "\033[0;35m$1\033[0m"
+}
+
 # reused code from autohosts; we can't rely on both files always existing (if the user clones to /tmp, for example)
 if [[ $EUID -ne 0 ]]; then
   red "This script must be ran as root, or with sudo privileges."
   exit 1
 fi
 
-REGUSER=$(last | grep "logged in" | grep -o '^\S*')
+REGUSER=$(last | grep "logged in" | grep -o '^\S*' | head -1)
 
 # check os type for home directory path
 if [[ "$OSTYPE" != "darwin"* ]];
 then
   HOME_USER="/home/$REGUSER/autohosts/"
+  AUTOHOSTS_PATH="/usr/bin/autohosts"
 else
   # macos
   HOME_USER="/Users/$REGUSER/autohosts/"
+  AUTOHOSTS_PATH="/usr/local/bin/autohosts"
 fi
 
-function green() {
-  echo -e "\e[32m$1\e[0m"
-}
-
-function red() {
-  echo -e "\e[0;31m$1\e[0m"
-}
-
-function brown() {
-  echo -e "\e[0;33m$1\e[0m"
-}
-
-function purple() {
-  echo -e "\e[0;35m$1\e[0m"
-}
-
-
-if [ -f /etc/autohosts.conf ] && [ -d "$HOME_USER" ];
+if [ -f /etc/autohosts.conf ];
 then
 
-  if [ -f /etc/autohosts.conf ];
-  then
-
-    rm /etc/autohosts.conf
-    green "Config removed..."
-  else
-    red "Autohosts config not found, skipping..."
-
-  fi
-
-  if [ -f /usr/bin/autohosts ];
-  then
-
-    rm /usr/bin/autohosts
-    green "Executable removed..."
-  else
-    red "Autohosts executable not found, skipping (it may have already been removed)..."
-  fi
-
-  if [ -d "$HOME_USER" ];
-  then
-
-    rm -rf "$HOME_USER"
-    green "Custom filters removed..."
-  else
-    red "Custom filters not found, skipping..."
-  fi
-
-  crontab -u root -l | grep -v '/usr/bin/autohosts'  | crontab -u root -
-  green "Autohosts crontab removed"
-
-  cp /etc/hosts /tmp/hosts-backup
-  echo "0.0.0.0 localhost" > /etc/hosts
-  green "/etc/hosts has been cleared.  You will need to re-add any custom entries."
-  purple "A backup has been temporarily copied to /tmp/hosts-backup if you need to save something from it.\nDone.\n"
+  rm /etc/autohosts.conf
+  green "Config removed..."
+else
+  red "Autohosts config not found, skipping..."
 
 fi
+
+if [ -f "$AUTOHOSTS_PATH" ];
+then
+
+  rm "$AUTOHOSTS_PATH"
+  green "Executable removed..."
+else
+  red "Autohosts executable not found, skipping (it may have already been removed)..."
+fi
+
+if [ -d "$HOME_USER" ];
+then
+
+  red "Leaving $HOME_USER - feel free to delete if you don't need it anymore."
+
+fi
+
+crontab -l | grep -v "$AUTOHOSTS_PATH"  | crontab
+green "Autohosts crontab removed"
+
+cp /etc/hosts /tmp/hosts-backup
+echo "0.0.0.0 localhost" > /etc/hosts
+green "/etc/hosts has been cleared.  You will need to re-add any custom entries."
+purple "A backup has been temporarily copied to /tmp/hosts-backup if you need to save something from it.\nDone.\n"
+
+
 exit 0
