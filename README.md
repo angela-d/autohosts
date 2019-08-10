@@ -26,14 +26,20 @@ Hosts file are a useful redundancy when coupled with ad blockers like [uBlock Or
 If you have an up-to-date hosts file, the risk is severely lessened.
 
 **Auto Hosts** will automate the setup process for maintaining an up to date hosts file, by:
- - Installing a weekly cronjob to pull fresh/updated copies of [Steven Black's Host file](https://github.com/StevenBlack/hosts) and [LocalFigurez Firefox Telemetry List](https://github.com/angela-d/autohosts/blob/master/firefox-includes) (default is every Sunday at 7:22pm)
- - Appends Facebook trackers, Linkedin ads, Google fonts, Firefox telemetry and other harvester sites that curated lists for whatever reason, have not added to their blacklists
+ - Installing a weekly cronjob to pull fresh/updated copies of hosts lists (default is every Sunday at 7:22pm)
+ - (Default custom_filters and firefox-includes) source appends Facebook trackers, Linkedin ads, Google fonts, Firefox telemetry and other harvester sites that curated lists for whatever reason, have not added to their blacklists
  - Refreshes DNS to instantiate the re-routed changes (Mac Only)
  - If [Devdom](https://notabug.org/angela/devdom) is installed, append all local virtualhosts (*if it is installed* - it is -not- a requirement!  Autohosts does a conditional check to ensure your dev environment doesn't break **if** you're using Devdom.  Read the code.)
  - Uninstall offers the ability to revert to a fresh hosts file and undo any changes made by Autohosts; a backup will be copied to /tmp
- - Add custom filters from ~/autohosts on your desktop
+ - Add custom blacklists, whitelists and host sources from ~/autohosts on your desktop
 
-Installing:
+## Who Should Use Autohosts?
+If you are frequently mobile, your privacy-hardened installs of Pi-Hole, OpenWRT or DD-WRT on your home router will not protect you.  Autohosts will shield you while on the go, independent of whose network you logon to.
+
+Likewise, not everyone has the means to flash custom router firmware or the skill necessary to do so.  Autohosts can fill that gap.
+
+
+## Installing:
 ![Install](./img/install.png)
 
 ### Firefox Snooping list, originally by LocalFigurez
