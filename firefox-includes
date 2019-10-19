@@ -157,6 +157,7 @@
 # I've seen it load unnecessary 3rd party scripts on enough sites to get suspicious of their intentions, hence addition to the filters
 0.0.0.0 pendio.io
 0.0.0.0 www.pendio.io
+0.0.0.0 app.pendio.io
 
 # tracking pixel/potential adblocker warning popup
 0.0.0.0 summerhamster.com
@@ -164,3 +165,6 @@
 
 # account takeover prevention suite by a reputable company, but relies on data compilation and tracking
 0.0.0.0 thisdata.com
+
+# stats collection should not be done without authorization of the user
+0.0.0.0 improving.duckduckgo.com
