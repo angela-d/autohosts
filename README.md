@@ -5,12 +5,17 @@ Automate hosts file updates on Linux-based and MacOS systems.
 ![Linux](./img/linux.png)
 ![Mac](./img/mac.png)
 
-## v3.0.0 Changes
-**Freedom of choice!**
+## v3.0.1 Changes
 
-- You can now utilize your own choice upstream hosts curators, rather than being content with the (previously) hardcoded host list by Steven Black.
+The example whitelist was impeding blockage of improving.duckduckgo.com tracking.
 
-- Logic improvements and bugfixes
+*If you previously installed Autohosts, running this update won't block improving.duckduckgo.com*
+
+To block improving.duckduckgo.com (for existing installs):
+
+- Edit your `~/autohosts/whitelist` and remove **duckduckgo** (and any other example filter you don't care to whitelist).
+
+This release is primarily to fix the minor bug for future installs.
 
 ### Purpose of Hosts Files
 Hosts files will reroute unwanted traffic from ad farms, behavioral tracking firms and malware sites to a blackhole; routing to 0.0.0.0 (localhost; your PC) when a request is made to a URL on the blacklist.
