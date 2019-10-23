@@ -1,0 +1,12 @@
+autohosts (3.0.1) stable; urgency=low
+
+  * Remove Duck Duck Go from sample whitelist
+
+ -- Angela <angela@disroot.org>  Wed, 23 Oct 2019 17:18:04 -0500
+
+autohosts (3.0.0) stable; urgency=low
+
+  * Custom hosts curators option added
+  * Bugfixes and improvements
+
+ -- Angela <angela@disroot.org>  Thu, 08 Aug 2019 22:29:32 -0500
