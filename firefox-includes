@@ -149,6 +149,9 @@
 
 # The following is not Firefox-related, but upstream haven't yet added these marketing/tracking domains
 # In the event they are added upstream, easy removal of duplicates by temporarily appending here
+0.0.0.0 assets.adobetm.com
+0.0.0.0 globalsiteanalytics.com
+0.0.0.0 cdn.lr-ingest.io
 0.0.0.0 src.ebay-us.com
 0.0.0.0 h-ebay.online-metrix.net
 0.0.0.0 grainify.com
