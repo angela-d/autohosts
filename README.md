@@ -61,7 +61,7 @@ Be sure to add nothing other than the domain(s) you want to whitelist to this fi
 ## To Install
 Debian-based Linux distros:
 ```bash
-git clone https://github.com/angela-d/autohosts.git && sudo apt install ./autohosts.deb
+git clone https://github.com/angela-d/autohosts.git && cd autohosts && sudo apt install ./autohosts.deb
 ```
 
 MacOS or non-Debian-based Linux distros:
