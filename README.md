@@ -139,3 +139,18 @@ Uninstalling:
 - OpenWRT also has [network-based adblocking](https://github.com/angela-d/brain-dump/blob/master/networking/openwrt-site-blocking.md) capabilities.
 - Rooted Android devices can utilize hosts files, too; simply load the hosts file via `adb push` to `/etc/hosts`
 - If you have to use Windows, [Unified Hosts Autoupdate](https://github.com/ScriptTiger/Unified-Hosts-AutoUpdate) offers similar capabilities to Autohosts, in a Windows environment
+
+### Troubleshooting
+If it appears autohosts isn't blocking anything, your browser likely has imposed DoH / DNS Over HTTPS on you.
+
+***
+
+**If you'd like to disable DoH:**
+
+Vivaldi or Chrome / Chromium:
+
+- Enter `chrome://flags` in your address bar and find: `Secure DNS lookups` > toggle to disable
+
+Firefox:
+
+- Enter `about:preferences` on your address bar and in the search box, enter `dns` > Settings > scroll to the bottom and un-tick `Enable DNS over HTTPS`
