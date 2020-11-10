@@ -154,3 +154,6 @@ Vivaldi or Chrome / Chromium:
 Firefox:
 
 - Enter `about:preferences` on your address bar and in the search box, enter `dns` > Settings > scroll to the bottom and un-tick `Enable DNS over HTTPS`
+
+### Known Bugs / To Fix
+If your PC is on **and networking is off / no internet connection** *and* autohosts' cron is triggered, your hosts file will only have additions from the custom list.
