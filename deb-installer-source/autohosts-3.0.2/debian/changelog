@@ -1,3 +1,9 @@
+autohosts (3.0.2) stable; urgency=low
+
+  * Check for an active internet connection before updating lists
+
+ -- Angela <angela@disroot.org>  Sun 14 Feb 2021 06:19:18 -0500
+
 autohosts (3.0.1) stable; urgency=low
 
   * Remove Duck Duck Go from sample whitelist

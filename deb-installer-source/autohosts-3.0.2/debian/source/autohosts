@@ -134,6 +134,14 @@ fi
 
 purple "== UPDATING =="
 
+# make sure there's an internet connection
+if [ ! "$(ping -c 1 '9.9.9.9')" ];
+then
+  # no internet, exit and try again next time
+  echo "No internet detected, exiting."
+  exit
+fi
+
 # check hosts_source for a list of preferred upstreams
 if [ -f "$HOME_USER"hosts_source ];
 then
