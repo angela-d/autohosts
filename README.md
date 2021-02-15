@@ -5,17 +5,9 @@ Automate hosts file updates on Linux-based and MacOS systems.
 ![Linux](./img/linux.png)
 ![Mac](./img/mac.png)
 
-## v3.0.1 Changes
+## v3.0.2 Changes
 
-The example whitelist was impeding blockage of improving.duckduckgo.com tracking.
-
-*If you previously installed Autohosts, running this update won't block improving.duckduckgo.com*
-
-To block improving.duckduckgo.com (for existing installs):
-
-- Edit your `~/autohosts/whitelist` and remove **duckduckgo** (and any other example filter you don't care to whitelist).
-
-This release is primarily to fix the minor bug for future installs.
+Make sure there's an active internet connection before updating lists.
 
 ### Purpose of Hosts Files
 Hosts files will reroute unwanted traffic from ad farms, behavioral tracking firms and malware sites to a blackhole; routing to 0.0.0.0 (localhost; your PC) when a request is made to a URL on the blacklist.
@@ -75,21 +67,22 @@ That's it !
 To see which version you're running on your system: `grep "VERSION=" /etc/autohosts.conf`
 
 
-### Versions prior to 3.0.0:
+### Non-Debian-based distros or MacOS:
 Due to structural changes in the codebase, an uninstall and reinstall is recommended (unless installed via deb).  You can do this without losing your custom filters.
 ```bash
-git clone https://github.com/angela-d/autohosts.git /tmp/autohosts &&
-cd autohosts &&
-cp ~/autohosts/custom_filters /tmp/custom_filters &&
-sudo ./prior-v2-uninstall
+git clone https://github.com/angela-d/autohosts.git /tmp/autohosts && cd /tmp/autohosts && cp ~/autohosts/custom_filters /tmp/custom_filters
 ```
-Run your preferred method of installation to get v3.0.0.  Once installation completes, restore your custom filters:
+Once installation completes, restore your custom filters:
 ```bash
-rm ~/autohosts/custom_filters &&
-mv /tmp/custom_filters ~/autohosts/custom_filters
+rm ~/autohosts/custom_filters && mv /tmp/custom_filters ~/autohosts/custom_filters
 ```
 
-Debian users: Simply `apt install ./autohosts.deb` to upgrade to the latest version.
+### Debian users
+Simply download the latest .deb & run (in the directory where you put the download):
+```bash
+apt install ./autohosts.deb
+```
+to upgrade to the latest version.
 ***
 
 ## Adding Custom Blacklists or Whitelists
@@ -156,4 +149,4 @@ Firefox:
 - Enter `about:preferences` on your address bar and in the search box, enter `dns` > Settings > scroll to the bottom and un-tick `Enable DNS over HTTPS`
 
 ### Known Bugs / To Fix
-If your PC is on **and networking is off / no internet connection** *and* autohosts' cron is triggered, your hosts file will only have additions from the custom list.
+manpage on Debian isn't seen.  No manpage at all for non-Debian installs.
