@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION=3.0.0
+VERSION=3.0.2
 
 # get the non-root user, so we can add the custom filters for them
 REGUSER=$(last | grep "logged in" | grep -o '^\S*' | head -1)
