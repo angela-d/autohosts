@@ -153,12 +153,10 @@
 0.0.0.0 globalsiteanalytics.com
 0.0.0.0 cdn.lr-ingest.io
 0.0.0.0 src.ebay-us.com
-0.0.0.0 h-ebay.online-metrix.net
 0.0.0.0 grainify.com
 0.0.0.0 cdn.grainify.com
 0.0.0.0 hubspot.net
 0.0.0.0 cdn2.hubspot.net
-0.0.0.0 servebom.com
 0.0.0.0 c.evidon.com
 
 # wtf is pendio? Their site is typical amorphic marketing drivel that tells you nothing much about what they do.
@@ -170,11 +168,14 @@
 # tracking pixel/potential adblocker warning popup
 0.0.0.0 summerhamster.com
 0.0.0.0 www.summerhamster.com
-0.0.0.0 services.xg4ken.com
 
 # account takeover prevention suite by a reputable company, but relies on data compilation and tracking
 0.0.0.0 thisdata.com
 
 # stats collection should not be done without authorization of the user
 0.0.0.0 improving.duckduckgo.com
+
+# junk annoyance/tracking on numerous sites
+0.0.0.0 cookielaw.org
+0.0.0.0 cdn.cookielaw.org
 
