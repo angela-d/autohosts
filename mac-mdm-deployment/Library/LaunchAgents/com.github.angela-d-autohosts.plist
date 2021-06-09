@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>EnvironmentVariables</key>
+	<dict>
+		<key>the_title</key>
+		<string>Autohosts</string>
+		<key>the_subtitle</key>
+		<string></string>
+		<key>bundle_id</key>
+		<string>com.github.angela-d-autohosts</string>
+	</dict>
+	<key>Label</key>
+	<string>com.github.angela-d-autohosts</string>
+	<key>Program</key>
+	<string>/usr/local/bin/autohosts</string>
+	<key>StartInterval</key> 
+	<integer>604800</integer>
+	<key>RunAtLoad</key>
+	<false/>
+</dict>
+</plist>
