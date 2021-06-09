@@ -5,9 +5,11 @@ Automate hosts file updates on Linux-based and MacOS systems.
 ![Linux](./img/linux.png)
 ![Mac](./img/mac.png)
 
-## v3.0.2 Changes
+## v3.1.0 Changes
 
-Make sure there's an active internet connection before updating lists.
+- Nothing of interest to Linux users
+- Use LaunchAgents instead of cron (Mac)
+- [MDM helper scripts](./mac-mdm-deployment/) added to repo for mass deployment
 
 ### Purpose of Hosts Files
 Hosts files will reroute unwanted traffic from ad farms, behavioral tracking firms and malware sites to a blackhole; routing to 0.0.0.0 (localhost; your PC) when a request is made to a URL on the blacklist.
@@ -17,6 +19,8 @@ Which means any traffic that would have left your system for that destination, i
 Despite what some may suggest, hosts files are not "1980s technology" and still very useful today, as an additional *layer* of security.
 
 Hosts file are a useful redundancy when coupled with ad blockers like [uBlock Origin](https://github.com/gorhill/uBlock) and [uMatrix](https://github.com/gorhill/uMatrix) - while debugging or 'Temporarily Allow All on this Site' with [Noscript](https://noscript.net/) can open you up to underlying attacks or privacy intrusions.
+
+- If you're a Safari user and want a pretty pre-made GUI for your adblocking, try [AdGuard](https://adguard.com/en/blog/adguard-safari-extension.html) - *note that this app is a plugin for Safari only; if you want cross-browser blocking, they have paid options, or you can use something like Autohosts for free (this very repo!).*
 
 **In-browser filters won't protect you if the [browser itself](https://spyware.neocities.org/articles/firefox.html) is [phoning home](https://dustri.org/b/mozilla-is-still-screwing-around-with-privacy-in-firefox.html).**
 
