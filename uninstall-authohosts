@@ -63,13 +63,20 @@ then
 
 fi
 
-crontab -l | grep -v "$AUTOHOSTS_PATH"  | crontab
-green "Autohosts crontab removed"
+if [ ! -e /Library/LaunchAgents/com.github.angela-d-autohosts.plist ];
+then
+  crontab -l | grep -v "$AUTOHOSTS_PATH"  | crontab
+  green "Autohosts crontab removed"
+elif [ -e /Library/LaunchAgents/com.github.angela-d-autohosts.plist ];
+then
+  launchctl unload /Library/LaunchAgents/com.github.angela-d-autohosts.plist && echo "Autohosts unloaded"
+fi
 
 cp /etc/hosts /tmp/hosts-backup
 echo "0.0.0.0 localhost" > /etc/hosts
+echo "127.0.0.1 local" >> /etc/hosts
+echo "255.255.255.255 broadcasthost" >> /etc/hosts
 green "/etc/hosts has been cleared.  You will need to re-add any custom entries."
 purple "A backup has been temporarily copied to /tmp/hosts-backup if you need to save something from it.\nDone.\n"
-
 
 exit 0
