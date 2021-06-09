@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION=3.0.0
+VERSION=3.1.0
 
 # get the non-root user, so we can add the custom filters for them
 REGUSER=$(last | grep "logged in" | grep -o '^\S*' | head -1)
@@ -10,10 +10,16 @@ if [[ "$OSTYPE" != "darwin"* ]];
 then
   HOME_USER="/home/$REGUSER/autohosts/"
   AUTOHOSTS_PATH="/usr/bin/autohosts"
+  # use launch daemon instead of cron? (mac only)
+  USE_LAUNCHD="0"
 else
   # macos
   HOME_USER="/Users/$REGUSER/autohosts/"
   AUTOHOSTS_PATH="/usr/local/bin/autohosts"
+  # use launch daemon instead of cron? (mac only)
+  USE_LAUNCHD="1"
+  # if your mdm deployment does this, set to 0
+  AUTOCREATE_LAUNCHAGENT="1"
 fi
 
 # initialize reusable stuff, to make the terminal results prettier
@@ -101,31 +107,38 @@ then
     cp hosts_source "$HOME_USER" && chown "$REGUSER:$REGUSER" -R "$HOME_USER"
   fi
 
-  # double-check to ensure we don't have a conflicting cron
-  croncheck
+	if [ ! "$USE_LAUNCHD" == "1" ];
+	then
+	  # double-check to ensure we don't have a conflicting cron
+	  croncheck
 
-  if [ "$EXIST" == 0 ];
-    then
+	  if [ "$EXIST" == 0 ];
+		then
 
-      # see if we are root or sudo; if sudo, we need to append sudo to the cron trigger
-      if [ "$(whoami)" == "root" ] ; then
-        CRON_PATH="$AUTOHOSTS_PATH"
-      else
-        CRON_PATH="sudo $AUTOHOSTS_PATH"
-      fi
+		  # see if we are root or sudo; if sudo, we need to append sudo to the cron trigger
+		  if [ "$(whoami)" == "root" ] ; then
+			CRON_PATH="$AUTOHOSTS_PATH"
+		  else
+			CRON_PATH="sudo $AUTOHOSTS_PATH"
+		  fi
 
-      # if no cronjob exists, create one
-      crontab -l | { cat; echo "22 19 * * 0 $CRON_PATH > /dev/null 2>&1"; } | crontab -
+		  # if no cronjob exists, create one
+		  crontab -l | { cat; echo "22 11 * * 3 $CRON_PATH > /dev/null 2>&1"; } | crontab -
 
-      croncheck
-      if [ "$EXIST" == 1 ];
-      then
-        green "Cronjob created..."
-      else
-        red "There was a problem creating the cronjob, you might have to create it manually!"
-      fi
+		  croncheck
+		  if [ "$EXIST" == 1 ];
+		  then
+			green "Cronjob created..."
+		  else
+			red "There was a problem creating the cronjob, you might have to create it manually!"
+		  fi
 
-  fi
+	  fi
+
+  elif [ "$AUTOCREATE_LAUNCHAGENT" == "1" ];
+  then
+    cp ./mac-mdm-deployment/Library/LaunchAgents/com.github.angela-d-autohosts.plist /Library/LaunchAgents/com.github.angela-d-autohosts.plist
+	fi
 
   purple "Setup is complete!"
 
