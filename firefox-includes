@@ -181,3 +181,7 @@
 
 # ecommerce fingerprinting
 0.0.0.0 1ad356638475.cdn4.forter.com
+
+# behavior analytics for marketing purposes
+0.0.0.0 blackcrow.ai
+0.0.0.0 shopify-init.blackcrow.ai
