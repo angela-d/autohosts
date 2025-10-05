@@ -181,7 +181,21 @@
 
 # ecommerce fingerprinting
 0.0.0.0 1ad356638475.cdn4.forter.com
+0.0.0.0 nofraud.com
+0.0.0.0 services.nofraud.com
 
 # behavior analytics for marketing purposes
 0.0.0.0 blackcrow.ai
 0.0.0.0 shopify-init.blackcrow.ai
+
+# ads
+0.0.0.0 klickly.com
+0.0.0.0 kst.klickly.com
+
+# unclear what these are for
+0.0.0.0 acsbapp.com
+0.0.0.0 rch.io
+0.0.0.0 assets.rch.io
+
+# fb can get effed - js sdk for social login; tracks non-fb users
+0.0.0.0 connect.facebook.net

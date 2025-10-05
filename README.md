@@ -43,7 +43,7 @@ Likewise, not everyone has the means to flash custom router firmware or the skil
 ## Installing:
 ![Install](./img/install.png)
 
-### Firefox Snooping list, originally by LocalFigurez
+### Firefox Snooping list, originally by user LocalFigurez
 For those of us who want our browser to behave like a browser and not a GPS anklet, this list will prove useful by blocking a [plethora of tracking URLs](firefox-includes).  A few of which, some Firefox users have noticed seem to phone home even when the setting is toggled off in about:config.
 
 ### Custom filters
